@@ -1,0 +1,14 @@
+LogParser Usage for Hunting with "Security Event Log - 4688 Process Tracking"
+
+LogParser.exe -stats:OFF -i:EVT 
+"SELECT 
+TimeGenerated as Date, 
+EventID as EventID, 
+EXTRACT_TOKEN(strings,13,'|') as Parent-Process-Name, 
+EXTRACT_TOKEN(strings,5,'|') as Process-Name, 
+EXTRACT_TOKEN(strings,8,'|') as Process-CommandLine, 
+EXTRACT_TOKEN(strings,0,'|') as User-SID-Value, 
+EXTRACT_TOKEN(strings,4,'|') AS Process-ID, 
+EXTRACT_TOKEN(strings,7,'|') AS Parent-Process-ID 
+INTO ExecutionHunting-4688.csv 
+FROM 'SOURCE_EVENT_LOG_FULL_PATH' WHERE EventID = '4688'" -headers:ON -o:csv
